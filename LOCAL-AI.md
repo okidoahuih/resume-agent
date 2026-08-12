@@ -1,4 +1,10 @@
-# 本地 AI 模式
+# 本地 / Vercel AI 模式
+
+## Vercel 部署（手机无需电脑）
+
+将此仓库导入 Vercel，Framework Preset 选择 **Other**，Build Command 留空，Output Directory 留空，点击 Deploy。Vercel 会自动把 `api/analyze.js` 部署为云函数，网页里的“本地服务器地址”填写部署后的域名，例如 `https://resume-agent-xxx.vercel.app`。
+
+每位用户仍需在网页中填写自己的 OpenAI API Key。Key 通过 HTTPS 临时发送给云函数，不写入 Vercel 环境变量、日志或文件。不要把 Key 放进 URL、GitHub 或代码。
 
 ## 启动
 
