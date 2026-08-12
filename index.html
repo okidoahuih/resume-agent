@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>投简历 Agent</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">你的求职副驾驶</p>
+        <h1>投简历 Agent</h1>
+      </div>
+      <span class="status-pill"><i></i> 已就绪</span>
+    </header>
+
+    <section class="hero card">
+      <div class="hero-copy">
+        <span class="spark">✦</span>
+        <h2>让合适的岗位<br>主动来到你面前</h2>
+        <p>每天扫描新岗位，先由你确认，再安全投递。</p>
+      </div>
+      <button class="primary-button" id="scanButton">开始扫描岗位 <span>→</span></button>
+      <div class="scan-progress" id="scanProgress" hidden>
+        <div class="progress-label"><span>正在匹配岗位…</span><span id="progressText">0%</span></div>
+        <div class="progress-track"><div id="progressBar"></div></div>
+      </div>
+    </section>
+
+    <section class="stats-grid">
+      <div class="stat card"><span class="stat-icon purple">◎</span><strong id="matchCount">12</strong><small>今日匹配</small></div>
+      <div class="stat card"><span class="stat-icon green">✓</span><strong id="pendingCount">3</strong><small>待你确认</small></div>
+      <div class="stat card"><span class="stat-icon orange">↗</span><strong id="sentCount">8</strong><small>已投递</small></div>
+    </section>
+
+    <nav class="tabs" aria-label="主要功能">
+      <button class="tab active" data-tab="jobs">推荐岗位</button>
+      <button class="tab" data-tab="profile">我的资料</button>
+      <button class="tab" data-tab="settings">规则设置</button>
+    </nav>
+
+    <section class="panel active" id="jobsPanel">
+      <div class="section-heading"><div><h2>待确认投递</h2><p>Agent 已替你完成初筛</p></div><button class="text-button" id="refreshButton">刷新</button></div>
+      <div id="jobList" class="job-list"></div>
+    </section>
+
+    <section class="panel" id="profilePanel">
+      <div class="section-heading"><div><h2>我的资料</h2><p>资料只保存在当前设备</p></div></div>
+      <form class="profile-form" id="profileForm">
+        <label>姓名<input name="name" placeholder="例如：李小明"></label>
+        <label>目标职位<input name="role" placeholder="例如：产品经理"></label>
+        <label>所在城市<input name="city" placeholder="例如：上海 / 远程"></label>
+        <label>简历文件<div class="file-row"><span id="fileName">尚未选择文件</span><button type="button" class="secondary-button" id="fileButton">选择 PDF</button></div><input type="file" id="resumeFile" accept="application/pdf,.doc,.docx" hidden></label>
+        <button class="primary-button full" type="submit">保存资料</button>
+      </form>
+    </section>
+
+    <section class="panel" id="settingsPanel">
+      <div class="section-heading"><div><h2>投递规则</h2><p>控制 Agent 的边界</p></div></div>
+      <div class="settings-list">
+        <label class="setting"><span><strong>先确认再投递</strong><small>每个岗位都需要你点一次确认</small></span><input type="checkbox" id="approvalToggle" checked><i class="switch"></i></label>
+        <label class="setting"><span><strong>仅匹配目标职位</strong><small>过滤不相关的岗位</small></span><input type="checkbox" id="roleToggle" checked><i class="switch"></i></label>
+        <label class="setting"><span><strong>工作日早间扫描</strong><small>每天 09:00 扫描一次</small></span><input type="checkbox" id="scheduleToggle" checked><i class="switch"></i></label>
+      </div>
+      <div class="notice"><span>🔒</span><p>账号登录、验证码和最终提交始终由你掌控。接入招聘平台时，我们会使用官方授权或浏览器端会话，不保存密码。</p></div>
+    </section>
+
+    <footer>投简历 Agent · MVP <span>本地模式</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
