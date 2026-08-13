@@ -3,74 +3,81 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f6f7fb">
-  <title>投简历 Agent</title>
+  <meta name="theme-color" content="#14532d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="求职助手">
+  <link rel="manifest" href="manifest.webmanifest">
   <link rel="stylesheet" href="styles.css">
+  <title>求职助手</title>
 </head>
 <body>
-  <main class="shell">
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">你的求职副驾驶</p>
-        <h1>投简历 Agent</h1>
-      </div>
-      <span class="status-pill"><i></i> 已就绪</span>
+  <main class="app-shell">
+    <header class="app-header">
+      <div><p class="kicker">本地优先 · 由你确认发送</p><h1>求职助手</h1></div>
+      <button class="icon-button" id="installHelp" aria-label="iPhone 使用说明">?</button>
     </header>
 
-    <section class="hero card">
-      <div class="hero-copy">
-        <span class="spark">✦</span>
-        <h2>让合适的岗位<br>主动来到你面前</h2>
-        <p>每天扫描新岗位，先由你确认，再安全投递。</p>
-      </div>
-      <button class="primary-button" id="scanButton">开始扫描岗位 <span>→</span></button>
-      <div class="scan-progress" id="scanProgress" hidden>
-        <div class="progress-label"><span>正在匹配岗位…</span><span id="progressText">0%</span></div>
-        <div class="progress-track"><div id="progressBar"></div></div>
-      </div>
+    <section class="view active" id="homeView">
+      <section class="hero">
+        <p id="todayLabel">今日建议沟通 0 / 20</p>
+        <h2>把精力留给真正适合的岗位</h2>
+        <p>导入 BOSS 分享文本或链接，助手只做筛选、分析和文案草稿。</p>
+        <button class="button primary" data-go="importView">导入一个职位</button>
+      </section>
+      <section class="stat-row" aria-label="求职统计">
+        <article><strong id="priorityCount">0</strong><span>优先沟通</span></article>
+        <article><strong id="watchCount">0</strong><span>待提升</span></article>
+        <article><strong id="savedCount">0</strong><span>已保存</span></article>
+      </section>
+      <section class="section-heading"><div><h2>优先队列</h2><p>匹配度 ≥ 85 分</p></div><button class="text-button" data-go="jobsView">查看全部</button></section>
+      <div id="priorityList" class="card-list"></div>
+      <section class="safety-note"><strong>安全边界</strong><p>不登录 BOSS、不抓取职位、不绕过验证码、不自动发送。每次沟通都由你在 BOSS 内亲自确认。</p></section>
     </section>
 
-    <section class="stats-grid">
-      <div class="stat card"><span class="stat-icon purple">◎</span><strong id="matchCount">12</strong><small>今日匹配</small></div>
-      <div class="stat card"><span class="stat-icon green">✓</span><strong id="pendingCount">3</strong><small>待你确认</small></div>
-      <div class="stat card"><span class="stat-icon orange">↗</span><strong id="sentCount">8</strong><small>已投递</small></div>
-    </section>
-
-    <nav class="tabs" aria-label="主要功能">
-      <button class="tab active" data-tab="jobs">推荐岗位</button>
-      <button class="tab" data-tab="profile">我的资料</button>
-      <button class="tab" data-tab="settings">规则设置</button>
-    </nav>
-
-    <section class="panel active" id="jobsPanel">
-      <div class="section-heading"><div><h2>待确认投递</h2><p>Agent 已替你完成初筛</p></div><button class="text-button" id="refreshButton">刷新</button></div>
-      <div id="jobList" class="job-list"></div>
-    </section>
-
-    <section class="panel" id="profilePanel">
-      <div class="section-heading"><div><h2>我的资料</h2><p>资料只保存在当前设备</p></div></div>
-      <form class="profile-form" id="profileForm">
-        <label>姓名<input name="name" placeholder="例如：李小明"></label>
-        <label>目标职位<input name="role" placeholder="例如：产品经理"></label>
-        <label>所在城市<input name="city" placeholder="例如：上海 / 远程"></label>
-        <label>简历文件<div class="file-row"><span id="fileName">尚未选择文件</span><button type="button" class="secondary-button" id="fileButton">选择 PDF</button></div><input type="file" id="resumeFile" accept="application/pdf,.doc,.docx" hidden></label>
-        <button class="primary-button full" type="submit">保存资料</button>
+    <section class="view" id="importView">
+      <section class="section-heading"><div><h2>导入职位</h2><p>从 BOSS 分享后粘贴链接或职位文本</p></div></section>
+      <form id="jobForm" class="form-card">
+        <label>职位链接（可选）<input id="jobUrl" type="url" placeholder="粘贴 BOSS 职位分享链接"></label>
+        <label>职位分享文本 / 职位描述<textarea id="jobText" rows="8" placeholder="粘贴职位名称、公司、薪资、城市、经验要求和职责"></textarea></label>
+        <button type="button" class="text-button align-left" id="pasteButton">从剪贴板粘贴</button>
+        <details><summary>补充准确字段（推荐）</summary>
+          <label>职位名称<input id="jobTitle" placeholder="例如：Java 后端工程师"></label>
+          <label>公司名称<input id="jobCompany" placeholder="例如：某某科技"></label>
+          <div class="two-col"><label>城市<input id="jobCity" placeholder="上海"></label><label>最高薪资（K/月）<input id="jobSalary" type="number" min="0" placeholder="35"></label></div>
+          <div class="two-col"><label>最低经验（年）<input id="jobYears" type="number" min="0" placeholder="3"></label><label>最低学历<select id="jobDegree"><option value="">未说明</option><option>大专</option><option>本科</option><option>硕士</option><option>博士</option></select></label></div>
+          <label>行业<input id="jobIndustry" placeholder="互联网 / 金融 / 电商"></label>
+        </details>
+        <button class="button primary" type="submit">筛选并生成策略</button>
       </form>
+      <div id="analysisResult" class="result-card" hidden></div>
     </section>
 
-    <section class="panel" id="settingsPanel">
-      <div class="section-heading"><div><h2>投递规则</h2><p>控制 Agent 的边界</p></div></div>
-      <div class="settings-list">
-        <label class="setting"><span><strong>先确认再投递</strong><small>每个岗位都需要你点一次确认</small></span><input type="checkbox" id="approvalToggle" checked><i class="switch"></i></label>
-        <label class="setting"><span><strong>仅匹配目标职位</strong><small>过滤不相关的岗位</small></span><input type="checkbox" id="roleToggle" checked><i class="switch"></i></label>
-        <label class="setting"><span><strong>工作日早间扫描</strong><small>每天 09:00 扫描一次</small></span><input type="checkbox" id="scheduleToggle" checked><i class="switch"></i></label>
-      </div>
-      <div class="notice"><span>🔒</span><p>账号登录、验证码和最终提交始终由你掌控。接入招聘平台时，我们会使用官方授权或浏览器端会话，不保存密码。</p></div>
+    <section class="view" id="jobsView">
+      <section class="section-heading"><div><h2>职位看板</h2><p>所有记录只保存在这台设备</p></div><button class="text-button" id="clearJobs">清空</button></section>
+      <div class="filter-pills" id="filters"><button class="pill active" data-filter="all">全部</button><button class="pill" data-filter="priority">优先</button><button class="pill" data-filter="watch">观望</button><button class="pill" data-filter="skip">已跳过</button></div>
+      <div id="jobList" class="card-list"></div>
     </section>
 
-    <footer>投简历 Agent · MVP <span>本地模式</span></footer>
+    <section class="view" id="profileView">
+      <section class="section-heading"><div><h2>我的求职偏好</h2><p>评分只使用你填写的内容</p></div></section>
+      <form id="profileForm" class="form-card">
+        <label>目标职位<input name="targetRole" required placeholder="例如：Java 后端工程师"></label>
+        <div class="two-col"><label>城市 / 远程<input name="city" placeholder="上海 / 远程"></label><label>最高学历<select name="degree"><option>大专</option><option selected>本科</option><option>硕士</option><option>博士</option></select></label></div>
+        <div class="two-col"><label>工作年限<input name="years" type="number" min="0" placeholder="3"></label><label>期望薪资下限（K/月）<input name="minSalary" type="number" min="0" placeholder="25"></label></div>
+        <div class="two-col"><label>当前薪资（K/月）<input name="currentSalary" type="number" min="0" placeholder="20"></label><label>每日建议沟通上限<input name="dailyLimit" type="number" min="1" max="20" value="20"></label></div>
+        <label>技能关键词（用逗号分隔）<textarea name="skills" rows="3" placeholder="Java, Spring Boot, MySQL, Redis, 微服务"></textarea></label>
+        <label>过往行业<input name="industry" placeholder="例如：电商、金融科技"></label>
+        <label>排除词（用逗号分隔）<input name="blacklist" value="外包,人力派遣,保险,理财,大小周,单休,销售"></label>
+        <button class="button primary" type="submit">保存偏好</button>
+      </form>
+      <section class="safety-note"><strong>iPhone 使用</strong><p>在 Safari 点“分享”→“添加到主屏幕”，以后即可像 App 一样打开。数据存储在浏览器本机；清除 Safari 网站数据会一并删除。</p></section>
+    </section>
+
+    <nav class="tabbar" aria-label="主导航"><button class="tab active" data-go="homeView">首页</button><button class="tab" data-go="importView">导入</button><button class="tab" data-go="jobsView">看板</button><button class="tab" data-go="profileView">偏好</button></nav>
   </main>
-  <div class="toast" id="toast" role="status"></div>
+  <dialog id="helpDialog"><button class="dialog-close" aria-label="关闭">×</button><h2>在 iPhone 上使用</h2><ol><li>用 Safari 打开此网址。</li><li>点击底部“分享”按钮。</li><li>选择“添加到主屏幕”。</li><li>在 BOSS 查看岗位时，复制分享文本或链接，再回到本助手粘贴。</li></ol></dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
   <script src="app.js"></script>
 </body>
 </html>
