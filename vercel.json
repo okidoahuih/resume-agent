@@ -1,7 +1,3 @@
 {
-  "version": 2,
-  "cleanUrls": true,
-  "functions": {
-    "api/analyze.js": { "runtime": "nodejs20.x" }
-  }
+  "cleanUrls": true
 }
