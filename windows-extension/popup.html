@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="popup.css">
+  <title>导入当前职位</title>
+</head>
+<body>
+  <main>
+    <h1>导入当前职位</h1>
+    <p class="intro">仅在你点击下方按钮后，读取当前浏览器标签页的可见文字和链接。</p>
+    <label>求职助手网址
+      <input id="assistantUrl" type="url" value="https://resume-agent-lemon.vercel.app" autocomplete="off">
+    </label>
+    <button id="importButton">导入并自动分析当前页</button>
+    <p id="pageInfo" class="page-info">正在读取当前标签页…</p>
+    <p class="privacy">不会后台扫描、不会读取其他标签页、不会登录或操作 BOSS。</p>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>

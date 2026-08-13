@@ -27,3 +27,25 @@ $('#clearJobs').onclick=()=>{if(confirm('确定清空本机保存的全部职位
 $('#installHelp').onclick=()=>$('#helpDialog').showModal();$('.dialog-close').onclick=()=>$('#helpDialog').close();
 if('serviceWorker'in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
 renderHome();
+
+// One-click import from the companion Chrome/Edge extension. The extension only
+// supplies text after the user explicitly clicks its "import" button.
+(() => {
+  const encoded = new URLSearchParams(location.search).get('import');
+  if (!encoded) return;
+  try {
+    const bytes = Uint8Array.from(atob(encoded), char => char.charCodeAt(0));
+    const payload = JSON.parse(new TextDecoder().decode(bytes));
+    if (!payload || typeof payload.text !== 'string' || !payload.text.trim()) throw new Error('empty import');
+    $('#jobUrl').value = String(payload.url || '');
+    $('#jobText').value = payload.text.slice(0, 2500);
+    $('#jobTitle').value = String(payload.title || '');
+    history.replaceState({}, document.title, location.pathname);
+    openView('importView');
+    $('#jobForm').requestSubmit();
+    toast('已从浏览器当前页面导入并分析');
+  } catch {
+    history.replaceState({}, document.title, location.pathname);
+    toast('页面导入失败，请在导入页手动粘贴职位文本');
+  }
+})();

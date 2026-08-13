@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "\u6c42\u804c\u52a9\u624b - \u5bfc\u5165\u5f53\u524d\u804c\u4f4d",
+  "version": "1.0.0",
+  "description": "\u7528\u6237\u4e3b\u52a8\u70b9\u51fb\u540e\uff0c\u5c06\u5f53\u524d\u6807\u7b7e\u9875\u7684\u53ef\u89c1\u6587\u5b57\u548c\u94fe\u63a5\u5bfc\u5165\u6c42\u804c\u52a9\u624b\u5206\u6790\u3002",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "action": {
+    "default_title": "\u5bfc\u5165\u5f53\u524d\u804c\u4f4d",
+    "default_popup": "popup.html"
+  }
+}
