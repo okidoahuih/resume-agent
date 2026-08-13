@@ -1,1 +1,9 @@
-{"name":"resume-agent-local","version":"1.0.0","private":true,"scripts":{"start":"node server.mjs"}}
+{
+  "name": "resume-agent-local",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.mjs",
+    "build": "node build.mjs"
+  }
+}
